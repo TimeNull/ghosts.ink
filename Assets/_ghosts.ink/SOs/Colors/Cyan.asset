@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f92028c5a9b26914c8e2c02d2d00ca8e, type: 3}
-  m_Name: PlayerCurrentSpeed
+  m_Script: {fileID: 11500000, guid: 01832e531d475d648ae55a1a76d82ea8, type: 3}
+  m_Name: Cyan
   m_EditorClassIdentifier: 
-  value: 0

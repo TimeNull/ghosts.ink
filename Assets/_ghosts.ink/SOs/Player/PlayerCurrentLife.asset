@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f92028c5a9b26914c8e2c02d2d00ca8e, type: 3}
-  m_Name: _PlayerMaxSpeed
+  m_Name: PlayerCurrentLife
   m_EditorClassIdentifier: 
-  value: 10
+  value: 1.1

@@ -1,22 +1,22 @@
 using SO.Variables;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.EventSystems.StandaloneInputModule;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private float speedSmoothing = 100;
     [SerializeField] private float mouseRotateSmoothing = 1000f;
     [SerializeField] private float gamepadRotateSmoothing = 1000f;
     [SerializeField] private float controllerDeadzone = 0.1f;
-    [SerializeField] private FloatVariable Speed;
+    [SerializeField] private FloatVariable MaxSpeed;
     [SerializeField] private CharacterController body;
+    [SerializeField] private Gun playerFireController;
 
-    private Vector2 moveDirection;
+
+    private Vector3 velocity;
     private Vector2 aim;
-    [SerializeField] private bool isGamepad;
 
+    private bool isGamepad;
 
     private void Update()
     {
@@ -26,12 +26,15 @@ public class PlayerController : MonoBehaviour
 
     public void OnInputMove(InputAction.CallbackContext context)
     {
-        moveDirection = context.ReadValue<Vector2>();
+        Vector2 inputMove = context.ReadValue<Vector2>();
+
+        velocity = Vector3.right * inputMove.x + Vector3.forward * inputMove.y;
     }
 
     public void OnInputFire(InputAction.CallbackContext context)
     {
-
+        if(context.performed)
+            playerFireController.Fire();
     }
 
     public void OnInputAim(InputAction.CallbackContext context)
@@ -41,19 +44,35 @@ public class PlayerController : MonoBehaviour
 
     public void OnInputColor(InputAction.CallbackContext context)
     {
-
+        if(context.performed)
+            playerFireController.ChangeColor();
     }
+
+    private const string Gamepad = "Gamepad";
 
     public void OnDeviceChange(PlayerInput playerInput)
     {
-        isGamepad = playerInput.currentControlScheme.Equals("Gamepad");
+        isGamepad = playerInput.currentControlScheme.Equals(Gamepad);
     }
+
+
+    private Vector3 targetVelocity = Vector3.zero;
 
     private void HandleMovement()
     {
-        Vector3 velocity = Vector3.right * moveDirection.x + Vector3.forward * moveDirection.y;
+        if (isGamepad)
+        {
+            body.Move(MaxSpeed.Value * Time.deltaTime * velocity);
+        }
+        else
+        {
+            targetVelocity += velocity;
 
-        body.Move(Speed.Value * Time.deltaTime * velocity);
+            targetVelocity = Vector3.Lerp(targetVelocity, Vector3.zero, speedSmoothing * Time.deltaTime);
+
+            body.Move(MaxSpeed.Value * Time.deltaTime * targetVelocity);
+        }
+        
     }
 
     private void HandleRotation()
@@ -75,28 +94,23 @@ public class PlayerController : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(aim);
 
-            Debug.Log(ray);
-
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
-            float rayDistance;
-
-            if (groundPlane.Raycast(ray, out rayDistance))
+            if (groundPlane.Raycast(ray, out float rayDistance))
             {
                 Vector3 point = ray.GetPoint(rayDistance);
-                LookAt(point);
+                SmoothLookAt(point);
             }
         }
     }
 
-    private void LookAt(Vector3 lookPoint)
+    private void SmoothLookAt(Vector3 lookPoint)
     {
         Vector3 heightCorrectedPoint = new Vector3(lookPoint.x, body.transform.position.y, lookPoint.z);
 
         Quaternion targetRotation = Quaternion.LookRotation(heightCorrectedPoint - body.transform.position, Vector3.up);
 
-
-        transform.rotation = Quaternion.RotateTowards(body.transform.rotation, targetRotation, mouseRotateSmoothing * Time.deltaTime);
+        body.transform.rotation = Quaternion.Lerp(body.transform.rotation, targetRotation, mouseRotateSmoothing * Time.deltaTime);
     }
 
     
