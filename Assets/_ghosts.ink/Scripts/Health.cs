@@ -32,20 +32,22 @@ public class Health : MonoBehaviour
     }
 
 
-    public void TakeDamage(float variable, ColorType colorType = null)
+    public bool TakeDamage(float variable, ColorType colorType = null)
     {
         if (colorType && colorType != this.colorType)
-            return;
+            return false; //didn't match the color
 
         currentHealth.ApplyChange(variable);
+        return true; //did match the color
     }
 
-    public void TakeDamage(FloatVariable variable, ColorType colorType = null)
+    public bool TakeDamage(FloatVariable variable, ColorType colorType = null)
     {
         if (colorType && colorType != this.colorType)
-            return;
+            return false; //didn't match the color
 
         currentHealth.ApplyChange(variable);
+        return true; //did match the color
     }
 
 }

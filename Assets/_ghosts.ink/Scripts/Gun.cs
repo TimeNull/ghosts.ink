@@ -5,6 +5,8 @@ public class Gun : MonoBehaviour
 {
     [SerializeField] private ColorType[] colorTypes;
 
+    [SerializeField] private Material inkColor;
+
     [SerializeField] private int currentColorType;
 
     [Tooltip("Prefab to shoot")]
@@ -13,7 +15,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private float damage;
 
     [Tooltip("Projectile force")]
-    [SerializeField] private float muzzleVelocity = 700f;
+    [SerializeField] private float muzzleSpeed = 700f;
 
     [Tooltip("End point of gun where shots appear")]
     [SerializeField] private Transform muzzlePosition;
@@ -34,7 +36,7 @@ public class Gun : MonoBehaviour
     [SerializeField, TagSelector] private string targetTag;
 
     private float nextTimeToShoot;
-
+    private bool canFire;
 
     private void Awake()
     {
@@ -45,14 +47,20 @@ public class Gun : MonoBehaviour
 
     private void Update()
     {
-        
+        if(canFire && nextTimeToShoot <= 0)
+        {
+            nextTimeToShoot = cooldownWindow;
+            Fire();
+        }
+        else
+            nextTimeToShoot -= Time.deltaTime;
     }
 
     // invoked when creating an item to populate the object pool
     private Projectile CreateProjectile()
     {
         Projectile projectileInstance = Instantiate(projectilePrefab);
-        projectileInstance.ObjectPool = projectilePool;
+        projectileInstance.ProjectilePool = projectilePool;
         return projectileInstance;
     }
 
@@ -74,6 +82,7 @@ public class Gun : MonoBehaviour
         Destroy(pooledObject.gameObject);
     }
 
+    public void HoldFire(bool canFire) => this.canFire = canFire;
 
     public void Fire()
     {
@@ -86,10 +95,10 @@ public class Gun : MonoBehaviour
         bulletObject.transform.SetPositionAndRotation(muzzlePosition.position, muzzlePosition.rotation);
 
         // move projectile forward
-        bulletObject.SetupBullet(targetTag, muzzlePosition.forward * muzzleVelocity, damage, colorTypes[currentColorType]);
+        bulletObject.SetupBullet(targetTag, muzzlePosition.forward * muzzleSpeed, damage, colorTypes[currentColorType]);
 
         // turn off after a few seconds
-        bulletObject.Deactivate();
+        bulletObject.StartDeactivate();
 
         // set cooldown delay
         //nextTimeToShoot = Time.time + cooldownWindow;
@@ -97,10 +106,12 @@ public class Gun : MonoBehaviour
 
     public void ChangeColor()
     {
-        if (currentColorType < colorTypes.Length)
+        if (currentColorType < colorTypes.Length - 1)
             currentColorType++;
         else
             currentColorType = 0;
+
+        inkColor.color = colorTypes[currentColorType].color;
     }
 
     public void ChangeGun()

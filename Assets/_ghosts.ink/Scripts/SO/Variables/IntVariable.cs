@@ -21,20 +21,20 @@ namespace SO.Variables
 
         public void SetValue(IntVariable value)
         {
-            ValueChanged();
             this.value = value.Value;
+            ValueChanged();
         }
 
         public void ApplyChange(int amount)
         {
-            ValueChanged();
             value += amount;
+            ValueChanged();
         }
 
         public void ApplyChange(IntVariable amount)
         {
-            ValueChanged();
             value += amount.Value;
+            ValueChanged();
         }
 
     }

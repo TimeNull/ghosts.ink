@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterController body;
     [SerializeField] private Gun playerFireController;
 
-
     private Vector3 velocity;
     private Vector2 aim;
 
@@ -31,16 +30,25 @@ public class PlayerController : MonoBehaviour
         velocity = Vector3.right * inputMove.x + Vector3.forward * inputMove.y;
     }
 
-    public void OnInputFire(InputAction.CallbackContext context)
-    {
-        if(context.performed)
-            playerFireController.Fire();
-    }
-
     public void OnInputAim(InputAction.CallbackContext context)
     {
         aim = context.ReadValue<Vector2>();
     }
+
+
+    public void OnInputFire(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            playerFireController.HoldFire(true);
+            playerFireController.Fire();
+        }
+        
+        if(context.canceled)
+            playerFireController.HoldFire(false);
+            
+    }
+
 
     public void OnInputColor(InputAction.CallbackContext context)
     {

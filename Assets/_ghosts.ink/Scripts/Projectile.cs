@@ -1,9 +1,9 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class Projectile : MonoBehaviour
 {
+
     [SerializeField] private Rigidbody body;
     [SerializeField] private MeshRenderer meshRenderer;
     private Vector3 acceleration;
@@ -36,34 +36,38 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(targetTag))
-            other.GetComponent<Health>().TakeDamage(-damage, colorType);
+        {
+            if(other.GetComponent<Health>().TakeDamage(-damage, colorType))
+                Deactivate();
+        }
+            
     }
 
     //V V V V object pooling V V V V
 
     [SerializeField] private float timeoutDelay = 3f;
 
-    private IObjectPool<Projectile> objectPool;
+    private IObjectPool<Projectile> projectilePool;
 
     // public property to give the projectile a reference to its ObjectPool
-    public IObjectPool<Projectile> ObjectPool { set => objectPool = value; }
+    public IObjectPool<Projectile> ProjectilePool { set => projectilePool = value; }
 
-    public void Deactivate()
+    public void StartDeactivate()
     {
-        StartCoroutine(DeactivateRoutine(timeoutDelay));
+        Invoke(nameof(Deactivate), timeoutDelay);
     }
 
-    private IEnumerator DeactivateRoutine(float delay)
+    private void Deactivate()
     {
-        yield return new WaitForSeconds(delay);
+        CancelInvoke(nameof(Deactivate));
 
         // reset the moving Rigidbody
-        Rigidbody rBody = GetComponent<Rigidbody>();
-        rBody.velocity = new Vector3(0f, 0f, 0f);
-        rBody.angularVelocity = new Vector3(0f, 0f, 0f);
+        body = GetComponent<Rigidbody>();
+        body.velocity = new Vector3(0f, 0f, 0f);
+        body.angularVelocity = new Vector3(0f, 0f, 0f);
 
         // release the projectile back to the pool
-        objectPool.Release(this);
+        projectilePool.Release(this);
     }
 
 }
