@@ -95,7 +95,7 @@ public class Gun : MonoBehaviour
         bulletObject.transform.SetPositionAndRotation(muzzlePosition.position, muzzlePosition.rotation);
 
         // move projectile forward
-        bulletObject.SetupBullet(targetTag, muzzlePosition.forward * muzzleSpeed, damage, colorTypes[currentColorType]);
+        bulletObject.SetupBullet(targetTag, muzzlePosition.forward * muzzleSpeed, damage, colorTypes[currentColorType], gameObject.layer);
 
         // turn off after a few seconds
         bulletObject.StartDeactivate();
@@ -112,11 +112,6 @@ public class Gun : MonoBehaviour
             currentColorType = 0;
 
         inkColor.color = colorTypes[currentColorType].color;
-    }
-
-    public void ChangeGun()
-    {
-
     }
 
 }

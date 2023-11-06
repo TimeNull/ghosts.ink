@@ -10,12 +10,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float controllerDeadzone = 0.1f;
     [SerializeField] private FloatVariable MaxSpeed;
     [SerializeField] private CharacterController body;
-    [SerializeField] private Gun playerFireController;
+    [SerializeField] private Gun currentGun;
 
     private Vector3 velocity;
     private Vector2 aim;
 
     private bool isGamepad;
+
+    public Transform Body => body.transform;
 
     private void Update()
     {
@@ -40,12 +42,12 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            playerFireController.HoldFire(true);
-            playerFireController.Fire();
+            currentGun.HoldFire(true);
+            currentGun.Fire();
         }
         
         if(context.canceled)
-            playerFireController.HoldFire(false);
+            currentGun.HoldFire(false);
             
     }
 
@@ -53,7 +55,7 @@ public class PlayerController : MonoBehaviour
     public void OnInputColor(InputAction.CallbackContext context)
     {
         if(context.performed)
-            playerFireController.ChangeColor();
+            currentGun.ChangeColor();
     }
 
     private const string Gamepad = "Gamepad";
@@ -80,7 +82,8 @@ public class PlayerController : MonoBehaviour
 
             body.Move(MaxSpeed.Value * Time.deltaTime * targetVelocity);
         }
-        
+
+        body.Move(-9 * Time.deltaTime * Vector3.up);
     }
 
     private void HandleRotation()
@@ -120,6 +123,7 @@ public class PlayerController : MonoBehaviour
 
         body.transform.rotation = Quaternion.Lerp(body.transform.rotation, targetRotation, mouseRotateSmoothing * Time.deltaTime);
     }
+
 
     
 }

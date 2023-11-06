@@ -13,14 +13,15 @@ public class Projectile : MonoBehaviour
     
     private string targetTag;
 
-    public void SetupBullet(string targetTag, Vector3 acceleration, float damage, ColorType colorType)
+    public void SetupBullet(string targetTag, Vector3 acceleration, float damage, ColorType colorType, int layer)
     {
         currentVelocity = Vector3.zero;
-        this.acceleration = acceleration;
         this.damage = damage;
+        this.acceleration = acceleration;
         this.colorType = colorType;
         this.targetTag = targetTag;
         meshRenderer.material.color = colorType.color;
+        gameObject.layer = layer;
     }
 
     private void FixedUpdate()
@@ -37,10 +38,16 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag(targetTag))
         {
-            if(other.GetComponent<Health>().TakeDamage(-damage, colorType))
+            if(other.TryGetComponent(out Health health))
+            {
+                health.TakeDamage(-damage, colorType);
                 Deactivate();
+            }
         }
-            
+        else
+        {
+            Deactivate();
+        }
     }
 
     //V V V V object pooling V V V V

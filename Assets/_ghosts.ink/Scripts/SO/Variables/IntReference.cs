@@ -3,27 +3,27 @@ using System;
 namespace SO.Variables
 {
     [Serializable]
-    public class FloatReference
+    public class IntReference
     {
         public bool UseConstant = true;
-        public float ConstantValue;
-        public FloatVariable Variable;
+        public int ConstantValue;
+        public IntVariable Variable;
 
-        public FloatReference()
+        public IntReference()
         { }
 
-        public FloatReference(float value)
+        public IntReference(int value)
         {
             UseConstant = true;
             ConstantValue = value;
         }
 
-        public float Value
+        public int Value
         {
             get { return UseConstant ? ConstantValue : Variable.Value; }
         }
 
-        public void SetValue(float value)
+        public void SetValue(int value)
         {
             if (UseConstant)
                 ConstantValue = value;
@@ -31,7 +31,7 @@ namespace SO.Variables
                 Variable.Value = value;
         }
 
-        public void ApplyChange(float value)
+        public void ApplyChange(int value)
         {
             if (UseConstant)
                 ConstantValue += value;
@@ -39,7 +39,7 @@ namespace SO.Variables
                 Variable.ApplyChange(value);
         }
 
-        public void ApplyChange(FloatVariable value)
+        public void ApplyChange(IntVariable value)
         {
             if (UseConstant)
                 ConstantValue += value.Value;
@@ -47,7 +47,7 @@ namespace SO.Variables
                 Variable.ApplyChange(value);
         }
 
-        public static implicit operator float(FloatReference reference)
+        public static implicit operator int(IntReference reference)
         {
             return reference.Value;
         }
