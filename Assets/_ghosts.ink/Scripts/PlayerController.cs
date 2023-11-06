@@ -1,4 +1,6 @@
+using DG.Tweening;
 using SO.Variables;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,17 +14,31 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterController body;
     [SerializeField] private Gun currentGun;
 
+    public static event Action playerDied;
+
     private Vector3 velocity;
     private Vector2 aim;
 
     private bool isGamepad;
 
+    public bool CanMove { get; set; }
+
+    public bool CanRotate { get; set; }
+
+    private void Start()
+    {
+        CanRotate = true;
+    }
+
     public Transform Body => body.transform;
 
-    private void Update()
+    private void FixedUpdate()
     {
-        HandleRotation();
-        HandleMovement();
+        if(CanRotate)
+            HandleRotation();
+
+        if (CanMove)
+            HandleMovement();
     }
 
     public void OnInputMove(InputAction.CallbackContext context)
@@ -72,18 +88,16 @@ public class PlayerController : MonoBehaviour
     {
         if (isGamepad)
         {
-            body.Move(MaxSpeed.Value * Time.deltaTime * velocity);
+            body.Move(MaxSpeed.Value * Time.fixedDeltaTime * velocity);
         }
         else
         {
-            targetVelocity += velocity;
+            targetVelocity = Vector3.Lerp(targetVelocity, velocity, speedSmoothing * Time.fixedDeltaTime);
 
-            targetVelocity = Vector3.Lerp(targetVelocity, Vector3.zero, speedSmoothing * Time.deltaTime);
-
-            body.Move(MaxSpeed.Value * Time.deltaTime * targetVelocity);
+            body.Move(MaxSpeed.Value * Time.fixedDeltaTime * targetVelocity);
         }
 
-        body.Move(-9 * Time.deltaTime * Vector3.up);
+        body.Move(-9 * Time.fixedDeltaTime * Vector3.up);
     }
 
     private void HandleRotation()
@@ -97,7 +111,7 @@ public class PlayerController : MonoBehaviour
                 if(playerDirection.sqrMagnitude > 0f)
                 {
                     Quaternion newRotation = Quaternion.LookRotation(playerDirection, Vector3.up);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, gamepadRotateSmoothing * Time.deltaTime);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, gamepadRotateSmoothing * Time.fixedDeltaTime);
                 }
             }
         }
@@ -121,7 +135,37 @@ public class PlayerController : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.LookRotation(heightCorrectedPoint - body.transform.position, Vector3.up);
 
-        body.transform.rotation = Quaternion.Lerp(body.transform.rotation, targetRotation, mouseRotateSmoothing * Time.deltaTime);
+        body.transform.rotation = Quaternion.Lerp(body.transform.rotation, targetRotation, mouseRotateSmoothing * Time.fixedDeltaTime);
+    }
+
+    public void OnDie()
+    {
+        playerDied?.Invoke();
+
+        CanMove = false;
+        CanRotate = false;
+
+        var tweener = body.transform.DORotate(Vector3.right * -90, 1);
+
+        //// Subscribe to the completion event and set the final rotation
+        //tweener.OnComplete(() =>
+        //{
+        //    body.transform.rotation = Quaternion.Euler(Vector3.right * -90);
+        //});
+
+    }
+
+    public void OnRestart()
+    {
+        CanRotate = true;
+        //var tweener = body.transform.DORotate(Vector3.right * 90, 1);
+
+        //// Subscribe to the completion event and set the final rotation
+        //tweener.OnComplete(() =>
+        //{
+        //    body.transform.rotation = Quaternion.Euler(Vector3.right * 90);
+        //});
+
     }
 
 

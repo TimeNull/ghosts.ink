@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92028c5a9b26914c8e2c02d2d00ca8e, type: 3}
   m_Name: PlayerCurrentHealth
   m_EditorClassIdentifier: 
-  value: 1.1
+  value: 500

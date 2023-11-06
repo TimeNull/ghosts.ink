@@ -22,8 +22,6 @@ public class CYAN : EnemyController
             agent.isStopped = true;
 
             StartCoroutine(Explosion());
-
-            
         }
     }
 

@@ -120,7 +120,7 @@ MonoBehaviour:
   damage: 5
   muzzleSpeed: 800
   muzzlePosition: {fileID: 1579871124313545822}
-  cooldownWindow: 0.2
+  cooldownWindow: 0.5
   collectionCheck: 1
   defaultCapacity: 20
   maxSize: 100
@@ -239,18 +239,6 @@ MonoBehaviour:
   OnDie:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1579871124253589934}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 11400000, guid: 53629fbac7d8c9c4c9c99648e99e5538, type: 2}
         m_TargetAssemblyTypeName: SO.Variables.IntVariable, Assembly-CSharp
         m_MethodName: ApplyChange
@@ -259,6 +247,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 11400000, guid: 830ceca521f558b479fef9a5173e5b11,
             type: 2}
           m_ObjectArgumentAssemblyTypeName: SO.Variables.IntVariable, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1579871124253589926}
+        m_TargetAssemblyTypeName: EnemyController, Assembly-CSharp
+        m_MethodName: Deactivate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -288,9 +288,9 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1579871124253589934}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -334000983
   m_Radius: 0.5
-  m_Speed: 10
+  m_Speed: 12
   m_Acceleration: 30
   avoidancePriority: 50
   m_AngularSpeed: 180

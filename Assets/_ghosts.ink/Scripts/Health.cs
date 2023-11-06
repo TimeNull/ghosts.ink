@@ -11,18 +11,32 @@ public class Health : MonoBehaviour
     [SerializeField] private FloatReference currentHealth;
 
     public UnityEvent OnDie;
+    private bool isDead;
 
-    private void Start()
+    private void OnEnable()
     {
         currentHealth.SetValue(maxHealth.Value); 
+    }
+
+    private void OnDisable()
+    {
+        currentHealth.SetValue(maxHealth.Value);
     }
 
     private void Update()
     {
         if(currentHealth.Value < 0.01f)
         {
-            currentHealth.SetValue(0);
-            Die();
+            if (!isDead)
+            {
+                isDead = true;
+                currentHealth.SetValue(0);
+                Die();
+            }
+        }
+        else
+        {
+            isDead = false;
         }
     }
 
@@ -50,20 +64,4 @@ public class Health : MonoBehaviour
         return true; //did match the color
     }
 
-    private Collider lastCollider;
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        //on collision enter
-        if(hit.collider != lastCollider)
-        {
-            Debug.Log(hit.collider);
-            lastCollider = hit.collider;
-
-            if (hit.collider.TryGetComponent(out DealDamage damage))
-                TakeDamage(-damage.Damage, damage.ColorType);
-
-        }
-        
-    }
 }

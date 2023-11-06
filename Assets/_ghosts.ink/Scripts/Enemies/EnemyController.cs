@@ -1,4 +1,5 @@
 using SO.Variables;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
@@ -12,16 +13,27 @@ public abstract class EnemyController : MonoBehaviour
 
     [SerializeField] protected Transform player;
 
-    protected IObjectPool<Projectile> enemyPool;
+    protected IObjectPool<EnemyController> enemyPool;
 
     // public property to give the projectile a reference to its ObjectPool
-    public IObjectPool<Projectile> EnemyPool { set => enemyPool = value; }
+    public IObjectPool<EnemyController> EnemyPool { set => enemyPool = value; }
 
-    public virtual void SetupEnemy(Transform target, Transform player)
+    public virtual void SetupEnemy(Vector3 startPos, Transform target, Transform player)
     {
         this.player = player;
         this.target = target;
         agent.isStopped = false;
+        agent.Warp(startPos);
+        gameObject.SetActive(true);
+    }
+
+    public virtual void SetupEnemy(Vector3 startPos, Transform player)
+    {
+        this.player = player;
+        this.target = player;
+        agent.isStopped = false;
+        agent.Warp(startPos);
+        gameObject.SetActive(true);
     }
 
     protected virtual void HandleMovement()
@@ -35,5 +47,31 @@ public abstract class EnemyController : MonoBehaviour
         HandleMovement();
     }
 
+    public void Deactivate()
+    {
 
+        // reset the moving Rigidbody
+        agent.velocity = Vector3.zero;
+        agent.isStopped = false;
+        agent.ResetPath();
+        agent.Warp(Vector3.zero);
+
+        // release the projectile back to the pool
+        enemyPool.Release(this);
+    }
+
+    private void OnEnable()
+    {
+        PlayerController.playerDied += Stop;
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.playerDied -= Stop;
+    }
+
+    private void Stop()
+    {
+        Deactivate();
+    }
 }
