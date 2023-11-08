@@ -24,7 +24,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private IntVariable currentScore;
 
     [SerializeField] private GameObject putScore;
-    [SerializeField] private GameObject dontPutScore;
+    [SerializeField] private GameObject gameOver;
 
     // Start is called before the first frame update
     private void OnEnable()
@@ -56,6 +56,8 @@ public class UIController : MonoBehaviour
 
     public void AddHighScore(TMP_InputField playerName)
     {
+        if (!putScore.activeSelf) return;
+
         HighScoreEntry newEntry = new HighScoreEntry { playerName = playerName.text, score = currentScore.Value };
 
         if (highScores.Count < MaxHighScores || currentScore.Value > highScores[highScores.Count - 1].score)
@@ -69,6 +71,8 @@ public class UIController : MonoBehaviour
             SaveHighScores();
         }
     }
+
+    public void ResetCurrentScore() => currentScore.Value = 0;
 
     private void SaveHighScores()
     {
@@ -91,15 +95,17 @@ public class UIController : MonoBehaviour
     {
         LoadHighScores();
 
-        if(highScores.Count > 0)
-        {
-            if (currentScore.Value > highScores[highScores.Count - 1].score)
-                putScore.SetActive(true);
-            else
-                dontPutScore.SetActive(true);
-        }
-        else
+        if (highScores.Count < 1 || currentScore.Value > highScores[highScores.Count - 1].score)
             putScore.SetActive(true);
+        else
+            putScore.SetActive(false);
+
+        gameOver.SetActive(true);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
 }

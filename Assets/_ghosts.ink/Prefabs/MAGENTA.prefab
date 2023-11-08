@@ -50,14 +50,6 @@ MonoBehaviour:
   rb: {fileID: 450744657707386384}
   target: {fileID: 0}
   player: {fileID: 0}
-  attackCooldown:
-    UseConstant: 1
-    ConstantValue: 1
-    Variable: {fileID: 0}
-  attackDamage:
-    UseConstant: 1
-    ConstantValue: 50
-    Variable: {fileID: 0}
   canMove:
     UseConstant: 1
     ConstantValue: 0
@@ -277,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e2a031e7e394a14991ad4dcfef50fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageCooldown: 0.5
+  damageCooldown: 1
   damage:
     UseConstant: 1
     ConstantValue: 50

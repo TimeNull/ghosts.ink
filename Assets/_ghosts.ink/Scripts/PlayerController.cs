@@ -145,27 +145,14 @@ public class PlayerController : MonoBehaviour
         CanMove = false;
         CanRotate = false;
 
-        var tweener = body.transform.DORotate(Vector3.right * -90, 1);
-
-        //// Subscribe to the completion event and set the final rotation
-        //tweener.OnComplete(() =>
-        //{
-        //    body.transform.rotation = Quaternion.Euler(Vector3.right * -90);
-        //});
+        body.transform.DORotate(Vector3.right * -90, 1);
 
     }
 
-    public void OnRestart()
+    public void OnStart()
     {
+        CanMove = true;
         CanRotate = true;
-        //var tweener = body.transform.DORotate(Vector3.right * 90, 1);
-
-        //// Subscribe to the completion event and set the final rotation
-        //tweener.OnComplete(() =>
-        //{
-        //    body.transform.rotation = Quaternion.Euler(Vector3.right * 90);
-        //});
-
     }
 
 

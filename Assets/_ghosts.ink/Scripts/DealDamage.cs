@@ -32,6 +32,8 @@ public class DealDamage : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (currentDmgCooldown > 0) return;
+
         if (collision.gameObject.CompareTag(targetTag))
         {
             collision.transform.GetComponent<Health>().TakeDamage(-damage.Value, colorType);
@@ -40,6 +42,8 @@ public class DealDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (currentDmgCooldown > 0) return;
+
         if (other.CompareTag(targetTag))
             other.GetComponent<Health>().TakeDamage(-damage.Value, colorType);
     }

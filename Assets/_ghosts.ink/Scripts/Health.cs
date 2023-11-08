@@ -13,14 +13,19 @@ public class Health : MonoBehaviour
     public UnityEvent OnDie;
     private bool isDead;
 
+    public void ResetHealth()
+    {
+        currentHealth.SetValue(maxHealth.Value);
+    }
+
     private void OnEnable()
     {
-        currentHealth.SetValue(maxHealth.Value); 
+        ResetHealth();
     }
 
     private void OnDisable()
     {
-        currentHealth.SetValue(maxHealth.Value);
+        ResetHealth();
     }
 
     private void Update()
