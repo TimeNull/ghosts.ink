@@ -20,7 +20,6 @@ public class EnemyManager : MonoBehaviour
 
     [SerializeField] private List<EnemyController> enemies;
 
-
     // stack-based ObjectPool available with Unity 2021 and above
     private IObjectPool<EnemyController> cyanPool;
     private IObjectPool<EnemyController> magentaPool;
@@ -110,6 +109,7 @@ public class EnemyManager : MonoBehaviour
 
     public void SpawnEnemy(float cyanChance, float magentaChance, float yellowChance)
     {
+
         EnemyController enemyObject;
 
         float chance = Random.value;
@@ -175,7 +175,7 @@ public class EnemyManager : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         float spawnSpeed = 2;
-        float currentSpawnSpeed = 2;
+        float currentSpawnSpeed = 4;
 
         while(playerHealth > 0)
         {

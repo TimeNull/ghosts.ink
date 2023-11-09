@@ -32,8 +32,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3456130497597509251}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.128, z: 0}
-  m_LocalScale: {x: 1.5, y: 1, z: 1.5385}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -46,7 +46,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3456130497597509251}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -5495902117074765545, guid: 5835d4a80b7949b488d4c1e34b47c518, type: 3}
 --- !u!23 &3456130497597509249
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -197,7 +197,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 1
+  m_BaseOffset: 0
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!136 &3456130497597509273
@@ -210,10 +210,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
+  m_Radius: 0.78474617
+  m_Height: 2.8599234
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0, y: 1.4299617, z: 0.21525371}
 --- !u!54 &3456130497597509272
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -242,4 +242,4 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 2
   m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1.5, z: 0.2}

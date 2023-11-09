@@ -22,29 +22,38 @@ public class DealDamage : MonoBehaviour
     }
     public ColorType ColorType => colorType;
 
-    private void Update()
-    {
-        if (currentDmgCooldown > 0)
-            currentDmgCooldown -= Time.deltaTime;
-        else
-            currentDmgCooldown = damageCooldown;
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
+        
         if (currentDmgCooldown > 0) return;
 
         if (collision.gameObject.CompareTag(targetTag))
         {
             collision.transform.GetComponent<Health>().TakeDamage(-damage.Value, colorType);
+            StartCoroutine(Cooldown());
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        
         if (currentDmgCooldown > 0) return;
 
         if (other.CompareTag(targetTag))
+        {
             other.GetComponent<Health>().TakeDamage(-damage.Value, colorType);
+            StartCoroutine(Cooldown());
+        }
+            
+            
+    }
+
+    private IEnumerator Cooldown()
+    {
+        while(currentDmgCooldown > 0)
+        {
+            currentDmgCooldown -= Time.deltaTime;
+            yield return null;
+        }
     }
 }

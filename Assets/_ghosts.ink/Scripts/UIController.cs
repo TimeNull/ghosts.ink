@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class HighScoreEntry
@@ -22,19 +23,24 @@ public class UIController : MonoBehaviour
 {
     [SerializeField] private TMPro.TextMeshProUGUI score;
     [SerializeField] private IntVariable currentScore;
+    [SerializeField] private FloatVariable currentLife;
+    [SerializeField] private FloatVariable maxLife;
 
     [SerializeField] private GameObject putScore;
     [SerializeField] private GameObject gameOver;
+    [SerializeField] private Slider health;
 
     // Start is called before the first frame update
     private void OnEnable()
     {
         currentScore.OnValueChanged += UpdateScore;
+        currentLife.OnValueChanged += UpdateLife;
     }
 
     private void OnDisable()
     {
         currentScore.OnValueChanged -= UpdateScore;
+        currentLife.OnValueChanged -= UpdateLife;
     }
 
     private void Start()
@@ -47,6 +53,10 @@ public class UIController : MonoBehaviour
         score.text = currentScore.Value.ToString();
     }
 
+    private void UpdateLife()
+    {
+        health.value = currentLife.Value / maxLife.Value;
+    }
 
     public List<HighScoreEntry> highScores = new List<HighScoreEntry>();
 
