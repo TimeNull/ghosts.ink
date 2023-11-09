@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     private Vector2 aim;
 
-    private bool isGamepad;
+    [SerializeField] private bool isGamepad;
 
     public bool CanMove { get; set; }
 
@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour
         Vector2 inputMove = context.ReadValue<Vector2>();
 
         velocity = Vector3.right * inputMove.x + Vector3.forward * inputMove.y;
+
+        Debug.Log(velocity);
     }
 
     public void OnInputAim(InputAction.CallbackContext context)
@@ -74,11 +76,13 @@ public class PlayerController : MonoBehaviour
             currentGun.ChangeColor();
     }
 
-    private const string Gamepad = "Gamepad";
+    private const string Gamepad = "Controller";
 
     public void OnDeviceChange(PlayerInput playerInput)
     {
         isGamepad = playerInput.currentControlScheme.Equals(Gamepad);
+
+        Debug.Log("changed");
     }
 
 
@@ -104,14 +108,13 @@ public class PlayerController : MonoBehaviour
     {
         if (isGamepad)
         {
-            if(Mathf.Abs(aim.x) > controllerDeadzone || Mathf.Abs(aim.y) > controllerDeadzone)
+            if (Mathf.Abs(aim.x) > controllerDeadzone || Mathf.Abs(aim.y) > controllerDeadzone)
             {
                 Vector3 playerDirection = Vector3.right * aim.x + Vector3.forward * aim.y;
-
-                if(playerDirection.sqrMagnitude > 0f)
+                if (playerDirection.sqrMagnitude > 0f)
                 {
                     Quaternion newRotation = Quaternion.LookRotation(playerDirection, Vector3.up);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, gamepadRotateSmoothing * Time.fixedDeltaTime);
+                    body.transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, gamepadRotateSmoothing * Time.fixedDeltaTime);
                 }
             }
         }

@@ -4415,11 +4415,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedSmoothing: 10
   mouseRotateSmoothing: 10
-  gamepadRotateSmoothing: 1000
+  gamepadRotateSmoothing: 500
   controllerDeadzone: 0.1
   MaxSpeed: {fileID: 11400000, guid: 71bb2baa660167f44a59b6b39556d99b, type: 2}
   body: {fileID: 1648557428}
   currentGun: {fileID: 838504901}
+  isGamepad: 0
 --- !u!114 &227516707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11336,7 +11337,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29590
+  m_Name: pb_Mesh29606
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -20832,7 +20833,7 @@ MonoBehaviour:
     type: 3}
   m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018,
     type: 3}
-  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018,
+  m_MoveAction: {fileID: -1680190386980627800, guid: ca9f5fa95ffab41fb9a615ab714db018,
     type: 3}
   m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018,
     type: 3}
