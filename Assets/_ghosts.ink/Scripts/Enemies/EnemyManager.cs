@@ -94,8 +94,6 @@ public class EnemyManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
         Transform spawnPoints = GameObject.FindGameObjectWithTag(SPAWN_POINT).transform;
@@ -109,7 +107,6 @@ public class EnemyManager : MonoBehaviour
 
     public void SpawnEnemy(float cyanChance, float magentaChance, float yellowChance)
     {
-
         EnemyController enemyObject;
 
         float chance = Random.value;
@@ -138,7 +135,6 @@ public class EnemyManager : MonoBehaviour
             enemyObject.transform.SetPositionAndRotation(GetPosition(), Quaternion.identity);
             enemyObject.SetupEnemy(GetPosition(), playerController.Body);
         }
-
     }
 
     private Vector3 GetPosition()

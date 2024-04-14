@@ -13,8 +13,6 @@ public class CYAN : EnemyController
     [SerializeField] protected SphereCollider explosion;
     [SerializeField] protected LayerMask targetLayers;
 
-
-
     protected void HandleAttack()
     {
         if (agent.hasPath && agent.remainingDistance < explodeMinDistance)
