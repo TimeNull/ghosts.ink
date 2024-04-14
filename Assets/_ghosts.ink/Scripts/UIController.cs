@@ -45,6 +45,7 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
+        VSync(true);
         currentScore.Value = 0;
     }
 
@@ -111,6 +112,16 @@ public class UIController : MonoBehaviour
             putScore.SetActive(false);
 
         gameOver.SetActive(true);
+    }
+
+    public void VSync(bool enable)
+    {
+        if (enable)
+            QualitySettings.vSyncCount = 1;
+        else
+            QualitySettings.vSyncCount = 0;
+
+        Application.targetFrameRate = 60;
     }
 
     public void Quit()

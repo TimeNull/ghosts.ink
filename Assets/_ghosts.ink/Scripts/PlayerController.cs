@@ -28,9 +28,38 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         CanRotate = true;
+        InputSystem.onActionChange += OnActionChange;
+
+        //InputSystem.onDeviceChange += (device, change) =>
+        //{
+        //    switch (change)
+        //    {
+        //        case InputDeviceChange.Added:
+        //            Debug.Log($"Device {device} was added");
+        //            break;
+        //        case InputDeviceChange.Removed:
+        //            Debug.Log($"Device {device} was removed");
+        //            break;
+        //    }
+        //};
+
+    }
+
+    private void OnActionChange(object obj, InputActionChange change)
+    {
+
+        if (change == InputActionChange.ActionPerformed)
+        {
+            var inputAction = (InputAction)obj;
+            var lastControl = inputAction.activeControl;
+            var lastDevice = lastControl.device;
+
+            Debug.Log($"device: {lastDevice.displayName}");
+        }
     }
 
     public Transform Body => body.transform;
+
 
     private void FixedUpdate()
     {
@@ -47,7 +76,7 @@ public class PlayerController : MonoBehaviour
 
         velocity = Vector3.right * inputMove.x + Vector3.forward * inputMove.y;
 
-        Debug.Log(velocity);
+        //Debug.Log(velocity);
     }
 
     public void OnInputAim(InputAction.CallbackContext context)
@@ -76,13 +105,13 @@ public class PlayerController : MonoBehaviour
             currentGun.ChangeColor();
     }
 
-    private const string Gamepad = "Controller";
+    private const string GAMEPAD = "Gamepad";
 
     public void OnDeviceChange(PlayerInput playerInput)
     {
-        isGamepad = playerInput.currentControlScheme.Equals(Gamepad);
+        isGamepad = playerInput.currentControlScheme.Equals(GAMEPAD);
 
-        Debug.Log("changed");
+        //Debug.Log(playerInput.currentControlScheme);
     }
 
 
@@ -110,11 +139,13 @@ public class PlayerController : MonoBehaviour
         {
             if (Mathf.Abs(aim.x) > controllerDeadzone || Mathf.Abs(aim.y) > controllerDeadzone)
             {
+                //Debug.Log("aiming");
                 Vector3 playerDirection = Vector3.right * aim.x + Vector3.forward * aim.y;
+
                 if (playerDirection.sqrMagnitude > 0f)
                 {
                     Quaternion newRotation = Quaternion.LookRotation(playerDirection, Vector3.up);
-                    body.transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, gamepadRotateSmoothing * Time.fixedDeltaTime);
+                    body.transform.rotation = Quaternion.RotateTowards(body.transform.rotation, newRotation, gamepadRotateSmoothing * Time.fixedDeltaTime);
                 }
             }
         }

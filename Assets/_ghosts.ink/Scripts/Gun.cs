@@ -45,17 +45,6 @@ public class Gun : MonoBehaviour
                collectionCheck, defaultCapacity, maxSize);
     }
 
-    private void Update()
-    {
-        if(canFire && nextTimeToShoot <= 0)
-        {
-            nextTimeToShoot = cooldownWindow;
-            Fire();
-        }
-        else
-            nextTimeToShoot -= Time.deltaTime;
-    }
-
     // invoked when creating an item to populate the object pool
     private Projectile CreateProjectile()
     {
@@ -82,8 +71,6 @@ public class Gun : MonoBehaviour
         Destroy(pooledObject.gameObject);
     }
 
-    public void HoldFire(bool canFire) => this.canFire = canFire;
-
     public void Fire()
     {
         Projectile bulletObject = projectilePool.Get();
@@ -104,6 +91,17 @@ public class Gun : MonoBehaviour
         //nextTimeToShoot = Time.time + cooldownWindow;
     }
 
+    private void Update()
+    {
+        if (canFire && nextTimeToShoot <= 0)
+        {
+            nextTimeToShoot = cooldownWindow;
+            Fire();
+        }
+        else
+            nextTimeToShoot -= Time.deltaTime;
+    }
+
     public void ChangeColor()
     {
         if (currentColorType < colorTypes.Length - 1)
@@ -113,5 +111,7 @@ public class Gun : MonoBehaviour
 
         inkColor.color = colorTypes[currentColorType].color;
     }
+
+    public void HoldFire(bool canFire) => this.canFire = canFire;
 
 }
