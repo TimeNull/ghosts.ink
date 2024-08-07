@@ -14,7 +14,7 @@ Instruções: <br>
 (EN-US)<br>
 Top Down Shooter Game for demonstrating the article "the importance of object oriented programming on game development".<br><br>
 
-Instruções:<br>
+Instructions:<br>
 1- Extract the file "ghosts.ink.zip";<br>
 2- Execute the file "ghosts.ink.exe";<br>
 3- Have fun!
